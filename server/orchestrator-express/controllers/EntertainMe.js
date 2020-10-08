@@ -10,9 +10,9 @@ module.exports = class EntertainMe {
                 res.json(JSON.parse(entertainMeCache))
             } else {
                 let all = {}
-                const movies = await axios.get('http://localhost:3001')
+                const movies = await axios.get('http://localhost:5001')
                 all.movies = movies.data
-                const series = await axios.get('http://localhost:3002')
+                const series = await axios.get('http://localhost:5002')
                 all.series = series.data
                 await redis.set('entertainMe', JSON.stringify(all))
                 res.json(all)

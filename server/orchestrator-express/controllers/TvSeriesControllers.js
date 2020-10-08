@@ -9,7 +9,7 @@ module.exports = class TvSeries {
             if(seriesCache) {
                 res.json(JSON.parse(seriesCache))
             } else {
-                const {data} = await axios.get('http://localhost:3002')
+                const {data} = await axios.get('http://localhost:5002')
                 await redis.set('seriesCache', JSON.stringify(data))
                 res.json(data)
             }
@@ -20,7 +20,7 @@ module.exports = class TvSeries {
     static async addSeries(req, res) {
         try {
             const {title, overview, poster_path, popularity, tags } = req.body
-            const {data} = await axios.post('http://localhost:3002', {
+            const {data} = await axios.post('http://localhost:5002', {
                 title, overview, poster_path, popularity, tags
             })
             redis.del('seriesCache')
@@ -32,7 +32,7 @@ module.exports = class TvSeries {
     static async deleteSeries(req, res) {
         try {
             const id = req.params.id
-            const {data} = await axios.delete(`http://localhost:3002/${id}`)
+            const {data} = await axios.delete(`http://localhost:5002/${id}`)
             redis.del('seriesCache')
             res.send(data)
         } catch(err) {
@@ -43,7 +43,7 @@ module.exports = class TvSeries {
         try {
             const id = req.params.id
             const {title, overview, poster_path, popularity, tags } = req.body
-            const {data} = await  axios.put(`http://localhost:3002/${id}`, {
+            const {data} = await  axios.put(`http://localhost:5002/${id}`, {
                 title, overview, poster_path, popularity, tags
             })
             redis.del('seriesCache')
@@ -55,7 +55,7 @@ module.exports = class TvSeries {
     static async findOneSeries(req, res) {
         try {
             const id = req.params.id
-            const {data} = await axios.get(`http://localhost:3002/${id}`)
+            const {data} = await axios.get(`http://localhost:5002/${id}`)
             res.json(data)
         } catch(err) {
             console.log(err)

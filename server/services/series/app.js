@@ -1,6 +1,6 @@
 const express = require('express')
 const app = express()
-const PORT = process.env.PORT || 3002
+const PORT = process.env.PORT || 5002
 require('./config/mongo')
 const router = require('./routers/')
 

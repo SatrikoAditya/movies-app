@@ -9,7 +9,7 @@ module.exports = class MoviesController {
             if(moviesCache) {
                 res.json(JSON.parse(moviesCache))
             } else {
-                const {data} = await axios.get('http://localhost:3001')
+                const {data} = await axios.get('http://localhost:5001')
                 await redis.set('moviesCache', JSON.stringify(data))
                 res.json(data)
             }
@@ -20,7 +20,7 @@ module.exports = class MoviesController {
     static async addMovie(req, res) {
         try {
             const {title, overview, poster_path, popularity, tags } = req.body
-            const {data} = await axios.post('http://localhost:3001', {
+            const {data} = await axios.post('http://localhost:5001', {
                 title, overview, poster_path, popularity, tags
             })
             await redis.del('moviesCache')
@@ -32,7 +32,7 @@ module.exports = class MoviesController {
     static async deleteMovie(req, res) {
         try {
             const id = req.params.id
-            const {data} = await axios.delete(`http://localhost:3001/${id}`)
+            const {data} = await axios.delete(`http://localhost:5001/${id}`)
             await redis.del('moviesCache')
             res.send(data)
         } catch(err) {
@@ -43,7 +43,7 @@ module.exports = class MoviesController {
         try {
             const id = req.params.id
             const {title, overview, poster_path, popularity, tags } = req.body
-            const {data} = await axios.put(`http://localhost:3001/${id}`, {
+            const {data} = await axios.put(`http://localhost:5001/${id}`, {
                 title, overview, poster_path, popularity, tags
             })
             await redis.del('moviesCache')
@@ -55,7 +55,7 @@ module.exports = class MoviesController {
     static async findOneMovie(req, res) {
         try {
             const id = req.params.id
-            const {data} = await axios.get(`http://localhost:3001/${id}`)
+            const {data} = await axios.get(`http://localhost:5001/${id}`)
             res.json(data)
         } catch(err) {
             console.log(err)
