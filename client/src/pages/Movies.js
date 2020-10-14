@@ -16,14 +16,14 @@ function Movies() {
                 <Navbar.Brand style={{color: '#c2cdd4'}}><h3>Movie List</h3></Navbar.Brand>
                 <Navbar.Toggle />
                 <Navbar.Collapse className="justify-content-end">
-                    <ModalInput refetch={() => (refetch())} />
+                    <ModalInput refetch={refetch} />
                 </Navbar.Collapse>
                 </Navbar>
                 <div className="d-flex flex-row justify-content-center flex-wrap">
                     {
                         data && data.movies.map(movie => {
                             return (
-                                <List refetch={() => (refetch())} movie={movie} key={movie._id} />
+                                <List refetch={refetch} movie={movie} key={movie._id} />
                             )
                         })
                     }

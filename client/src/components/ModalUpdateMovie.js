@@ -1,14 +1,15 @@
 import React, {useState, useEffect} from 'react'
 import {Button, Modal, Form} from 'react-bootstrap'
-import {useMutation, useQuery} from '@apollo/client'
+import {gql, useMutation, useQuery} from '@apollo/client'
 import {GET_BY_ID, UPDATE_MOVIE} from '../config/schema/index'
 
-export default function ModalUpdate({ id, refetch}) {
+export default function ModalUpdate({ id }) {
     const {loading: loadingById, error: errorById, data: dataById} = useQuery(GET_BY_ID, {
         variables: {
             id
         }
     })
+
     const [title, setTitle] = useState('')
     const [overview, setOverview] = useState('')
     const [poster_path, setPoster_path] = useState('')
@@ -19,8 +20,10 @@ export default function ModalUpdate({ id, refetch}) {
     const [updateMovie, {loading, error, data}] = useMutation(UPDATE_MOVIE)
 
     const handleClose = () => setShow(false)
-    const handleShow = () => setShow(true)
-    
+    const handleShow = () => {
+        
+        setShow(true)
+    }
     useEffect(() => {
         if(dataById) {
             setTitle(dataById.movieById.title)
@@ -51,9 +54,21 @@ export default function ModalUpdate({ id, refetch}) {
         event.preventDefault()
         updateMovie({variables: {
             id, title, overview, poster_path, popularity, tags : tags.split(',')
-        }})
+        }, refetchQueries : [{
+            query: gql`
+            query {
+                movies {
+                    _id
+                    title
+                    overview
+                    poster_path
+                    popularity
+                    tags
+                }
+            }
+            `
+        }]})
         setShow(false)
-        refetch()
         setTitle('')
         setOverview('')
         setPoster_path('')

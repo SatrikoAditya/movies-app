@@ -52,91 +52,133 @@ const typeDefs = gql`
 const resolvers = {
     Query: {
         movies: async () => {
-            // const moviesCache = await redis.get('moviesCacheApollo')
-            const {data} = await axios.get('http://localhost:5001')
-            // if(moviesCache) {
-            //     console.log(moviesCache, "<<<<<<<<<< ini moviesCache")
-            //     return JSON.parse(moviesCache) 
-            // } else {
-            //     await redis.set('moviesCacheApollo', JSON.stringify(data))
-            console.log(data)
-                return data
-            // }
+            try {
+                // const moviesCache = await redis.get('moviesCacheApollo')
+                // if(moviesCache) {
+                //     console.log(moviesCache)
+                //     return(JSON.parse(moviesCache)) 
+                // } else {
+                    const {data} = await axios.get('http://localhost:5001')
+                    // await redis.set('moviesCacheApollo', JSON.stringify(data))
+                    return data
+                // }
+            } catch(err) {
+                console.log(err)
+            }
         },
         series: async () => {
-            const seriesCache = await redis.get('seriesCacheApollo')
-            const {data} = await axios.get('http://localhost:5002')
-            if(seriesCache) {
-                return JSON.parse(seriesCache)
-            } else {
-                redis.set('seriesCacheApollo', JSON.stringify(data))
-                return data
+            try {
+                const seriesCache = await redis.get('seriesCacheApollo')
+                if(seriesCache) {
+                    return JSON.parse(seriesCache)
+                } else {
+                    const {data} = await axios.get('http://localhost:5002')
+                    redis.set('seriesCacheApollo', JSON.stringify(data))
+                    return data
+                }
+            } catch(err) {
+                console.log(err)
             }
         },
         movieById: async (parent, args, context, info) => {
-            const movieByIdCache = await redis.get(`movieByIdCacheApollo${args.id}`)
-            const {data} = await axios.get(`http://localhost:5001/${args.id}`)
-            if(movieByIdCache) {
-                return JSON.parse(movieByIdCache)
-            } else {
-                redis.set(`movieByIdCacheApollo${args.id}`, JSON.stringify(data))
-                return data
+            try {
+                // const movieByIdCache = await redis.get(`movieByIdCacheApollo${args.id}`)
+                const {data} = await axios.get(`http://localhost:5001/${args.id}`)
+                // if(movieByIdCache) {
+                //     return JSON.parse(movieByIdCache)
+                // } else {
+                    // redis.set(`movieByIdCacheApollo${args.id}`, JSON.stringify(data))
+                    console.log(data)
+                    return data
+                // }
+            } catch(err) {
+                console.log(err)
             }
         },
         serieById: async (parent, args, context, info) => {
-            const serieById = await redis.get(`serieByIdCacheApollo${args.id}`)
-            const {data} = await axios.get(`http://localhost:5002/${args.id}`)
-            if(serieById) {
-                return JSON.parse(serieById)
-            } else {
-                redis.set(`serieByIdCacheApollo${args.id}`, JSON.stringify(data))
-                return data
+            try {
+                // const serieById = await redis.get(`serieByIdCacheApollo${args.id}`)
+                const {data} = await axios.get(`http://localhost:5002/${args.id}`)
+                if(serieById) {
+                    return JSON.parse(serieById)
+                } else {
+                    // redis.set(`serieByIdCacheApollo${args.id}`, JSON.stringify(data))
+                    return data
+                }
+            } catch(err) {
+                console.log(err)
             }
         }
     },
 
     Mutation: {
         addMovie: async(parent, args, context, info) => {
-            // redis.del('moviesCacheApollo')
-            const {title, overview, poster_path, popularity, tags} = args
-            const {data} = await axios.post('http://localhost:5001', {
-                title, overview, poster_path, popularity, tags
-            })
-            return data
+            try {
+                // const red = redis.get('moviesCacheApollo')
+                // redis.del('moviesCacheApollo')
+                // console.log(red)
+                const {title, overview, poster_path, popularity, tags} = args
+                const {data} = await axios.post('http://localhost:5001', {
+                    title, overview, poster_path, popularity, tags
+                })
+                return data
+            } catch(err) {
+                console.log(err)
+            }
         },
         addSerie: async(parent, args, context, info) => {
-            const {title, overview, poster_path, popularity, tags} = args
-            const {data} = await axios.post('http://localhost:5002', {
-                title, overview, poster_path, popularity, tags
-            })
-            redis.del('seriesCacheApollo')
-            return data
+            try {
+                const {title, overview, poster_path, popularity, tags} = args
+                const {data} = await axios.post('http://localhost:5002', {
+                    title, overview, poster_path, popularity, tags
+                })
+                redis.del('seriesCacheApollo')
+                return data
+            } catch(err) {
+                console.log(err)
+            }
         },
         deleteMovie: async(parent, args, context, info) => {
-            redis.del('moviesCacheApollo')
-            const {data} = await axios.delete(`http://localhost:5001/${args.id}`)
-            return data
+            try {
+                // redis.del('moviesCacheApollo')
+                const {data} = await axios.delete(`http://localhost:5001/${args.id}`)
+                return data
+            } catch(err) {
+                console.log(err)
+            }
         },
         deleteSerie: async(parent, args, context, info) => {
-            const {data} = await axios.delete(`http://localhost:5002/${args.id}`)
-            redis.del('seriesCacheApollo')
-            return data
+            try {
+                const {data} = await axios.delete(`http://localhost:5002/${args.id}`)
+                // redis.del('seriesCacheApollo')
+                return data
+            } catch(err) {
+                console.log(err)
+            }
         },
         updateMovie: async(parent, args, context, info) => {
-            // redis.del('moviesCacheApollo')
-            const {id, title, overview, poster_path, popularity, tags} = args
-            const {data} = await axios.put(`http://localhost:5001/${id}`, {
-                title, overview, poster_path, popularity, tags
-            })
-            return data
+            try {
+                // redis.del('moviesCacheApollo')
+                const {id, title, overview, poster_path, popularity, tags} = args
+                const {data} = await axios.put(`http://localhost:5001/${id}`, {
+                    title, overview, poster_path, popularity, tags
+                })
+                return data
+            } catch(err) {
+                console.log(err)
+            }
         },
         updateSerie: async(parent, args, context, info) => {
-            const {id, title, overview, poster_path, popularity, tags} = args
-            const {data} = await axios.put(`http://localhost:5002/${id}`, {
-                title, overview, poster_path, popularity, tags
-            })
-            redis.del('seriesCacheApollo')
-            return data
+            try {
+                redis.del('seriesCacheApollo')
+                const {id, title, overview, poster_path, popularity, tags} = args
+                const {data} = await axios.put(`http://localhost:5002/${id}`, {
+                    title, overview, poster_path, popularity, tags
+                })
+                return data
+            } catch(err) {
+                console.log(err)
+            }
         }
     }
 }

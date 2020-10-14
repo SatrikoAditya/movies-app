@@ -54,7 +54,7 @@ export default function List({movie, refetch}) {
                 </Card>
                 <hr style={{margin: 0, backgroundColor: '#c2cdd4'}} />
                 <div style={{padding: 10, backgroundColor: '#131415'}}>
-                    <ModalUpdate refetch={() => (refetch())} id={movie._id} />
+                    <ModalUpdate id={movie._id} />
                     <Button variant="outline-danger" className="btn-sm mr-3" onClick={() => handleDelete(movie._id)}>Delete</Button>
                     <Button variant="outline-warning" className="btn-sm" onClick={() => addFavMovie(movie)}>⭐️ Add To Favorites</Button>
                 </div>
