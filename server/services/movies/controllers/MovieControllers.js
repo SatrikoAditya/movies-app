@@ -23,9 +23,11 @@ module.exports =  class MoviesController {
     }
     static delete(req, res) {
         const id = req.params.id
+        let data = {}
         Movie.delete(id)
-        .then(data => {
-            res.json('Berhasil Delete')
+        .then(result => {
+            data.result = 'Berhasil Delete'
+            res.json(data)
         })
         .catch(err => {
             console.log(err)
@@ -33,6 +35,7 @@ module.exports =  class MoviesController {
     }
     static update(req, res) {
         const id = req.params.id
+        const data = {}
         Movie.findOne(id)
         .then(data => {
             const title = req.body.title || data.title
@@ -44,7 +47,8 @@ module.exports =  class MoviesController {
             return Movie.update(updateData)
         })
         .then(result => {
-            res.json('Berhasil Update')
+            data.result = 'Berhasil Update'
+            res.json(data)
         })
         .catch(err => {
             console.log(err)

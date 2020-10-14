@@ -1,7 +1,7 @@
 const axios = require('axios')
 const Redis = require('ioredis')
 const redis = new Redis()
-
+ 
 module.exports = class MoviesController {
     static async findMovies(req, res) {
         try {

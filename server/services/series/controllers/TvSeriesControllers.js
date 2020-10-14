@@ -23,9 +23,11 @@ module.exports =  class TvSeriesController {
     }
     static delete(req, res) {
         const id = req.params.id
+        let data = {}
         TvSerie.delete(id)
-        .then(data => {
-            res.json('Berhasil Delete')
+        .then(result => {
+            data.result = 'Berhasil Delete'
+            res.json(data)
         })
         .catch(err => {
             console.log(err)
@@ -33,6 +35,7 @@ module.exports =  class TvSeriesController {
     }
     static update(req, res) {
         const id = req.params.id
+        let data = {}
         TvSerie.findOne(id)
         .then(data => {
             const title = req.body.title || data.title
@@ -44,7 +47,8 @@ module.exports =  class TvSeriesController {
             return TvSerie.update(updateData)
         })
         .then(result => {
-            res.json('Berhasil Update')
+            data.result = 'Berhasil Update'
+            res.json(data)
         })
         .catch(err => {
             console.log(err)
