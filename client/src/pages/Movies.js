@@ -7,7 +7,6 @@ import {FETCH_MOVIES} from '../config/schema/index'
 
 function Movies() {
     const {loading, error, data, refetch} = useQuery(FETCH_MOVIES)
-    console.log(data)
     return (
         <>
             {loading && <Spinner animation="border" />}

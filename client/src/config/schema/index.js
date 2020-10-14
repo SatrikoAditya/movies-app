@@ -55,6 +55,7 @@ export const ADD_MOVIE = gql`
         }
     }
 `
+
 export const GET_BY_ID = gql`
     query movieById($id: String) {
         movieById(id: $id) {

@@ -53,15 +53,16 @@ const resolvers = {
     Query: {
         movies: async () => {
             try {
-                // const moviesCache = await redis.get('moviesCacheApollo')
-                // if(moviesCache) {
-                //     console.log(moviesCache)
-                //     return(JSON.parse(moviesCache)) 
-                // } else {
+                const moviesCache = await redis.get('moviesCacheApollo')
+                if(moviesCache) {
+                    console.log(moviesCache)
+                    return(JSON.parse(moviesCache)) 
+                } else {
+                    redis.del('moviesCacheApollo')
                     const {data} = await axios.get('http://localhost:5001')
-                    // await redis.set('moviesCacheApollo', JSON.stringify(data))
+                    await redis.set('moviesCacheApollo', JSON.stringify(data))
                     return data
-                // }
+                }
             } catch(err) {
                 console.log(err)
             }
@@ -87,8 +88,7 @@ const resolvers = {
                 // if(movieByIdCache) {
                 //     return JSON.parse(movieByIdCache)
                 // } else {
-                    // redis.set(`movieByIdCacheApollo${args.id}`, JSON.stringify(data))
-                    console.log(data)
+                    // redis.set(`movieByIdCacheApollo${args.id}`, JSON.stringify(data))\
                     return data
                 // }
             } catch(err) {
@@ -114,13 +114,12 @@ const resolvers = {
     Mutation: {
         addMovie: async(parent, args, context, info) => {
             try {
-                // const red = redis.get('moviesCacheApollo')
-                // redis.del('moviesCacheApollo')
-                // console.log(red)
+                await redis.del('moviesCacheApollo')
                 const {title, overview, poster_path, popularity, tags} = args
                 const {data} = await axios.post('http://localhost:5001', {
                     title, overview, poster_path, popularity, tags
                 })
+                // await redis.del('movieCacheApollo')
                 return data
             } catch(err) {
                 console.log(err)
@@ -132,7 +131,7 @@ const resolvers = {
                 const {data} = await axios.post('http://localhost:5002', {
                     title, overview, poster_path, popularity, tags
                 })
-                redis.del('seriesCacheApollo')
+                await redis.del('seriesCacheApollo')
                 return data
             } catch(err) {
                 console.log(err)
@@ -140,8 +139,9 @@ const resolvers = {
         },
         deleteMovie: async(parent, args, context, info) => {
             try {
-                // redis.del('moviesCacheApollo')
+                await redis.del('moviesCacheApollo')
                 const {data} = await axios.delete(`http://localhost:5001/${args.id}`)
+                // await redis.del('moviesCacheApollo')
                 return data
             } catch(err) {
                 console.log(err)
@@ -150,7 +150,7 @@ const resolvers = {
         deleteSerie: async(parent, args, context, info) => {
             try {
                 const {data} = await axios.delete(`http://localhost:5002/${args.id}`)
-                // redis.del('seriesCacheApollo')
+                await redis.del('seriesCacheApollo')
                 return data
             } catch(err) {
                 console.log(err)
@@ -158,7 +158,7 @@ const resolvers = {
         },
         updateMovie: async(parent, args, context, info) => {
             try {
-                // redis.del('moviesCacheApollo')
+                await redis.del('moviesCacheApollo')
                 const {id, title, overview, poster_path, popularity, tags} = args
                 const {data} = await axios.put(`http://localhost:5001/${id}`, {
                     title, overview, poster_path, popularity, tags
@@ -170,7 +170,7 @@ const resolvers = {
         },
         updateSerie: async(parent, args, context, info) => {
             try {
-                redis.del('seriesCacheApollo')
+                await redis.del('seriesCacheApollo')
                 const {id, title, overview, poster_path, popularity, tags} = args
                 const {data} = await axios.put(`http://localhost:5002/${id}`, {
                     title, overview, poster_path, popularity, tags
