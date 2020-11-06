@@ -1,4 +1,4 @@
-# this is clone repository from entertain-me
+# this is mirror repository from entertain-me (private repo)
 
 ## Week-2 Day 4
 
