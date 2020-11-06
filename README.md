@@ -1,4 +1,4 @@
-# entertain-me
+# this is clone repository from entertain-me
 
 ## Week-2 Day 4
 
